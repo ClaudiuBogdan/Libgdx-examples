@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector3;
 
 public class Cube3D extends ApplicationAdapter {
 	//Create a model object to hold a cube
@@ -49,6 +50,11 @@ public class Cube3D extends ApplicationAdapter {
 		modelBatch.begin(camera);
 		modelBatch.render(instanceOfCube,environment);
 		modelBatch.end();
+
+		//Rotate the cube
+		Vector3 rotationAxisY = new Vector3(0,1,0);
+		float radiansPerFrame = 0.01f;
+		instanceOfCube.transform.rotateRad(rotationAxisY, radiansPerFrame);
 	}
 	
 	@Override
