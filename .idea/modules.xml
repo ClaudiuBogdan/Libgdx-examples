@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cube3D.iml" filepath="$PROJECT_DIR$/.idea/modules/Cube3D.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/android/Cube3D-android.iml" filepath="$PROJECT_DIR$/Cube3D/android/Cube3D-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/core/Cube3D-core.iml" filepath="$PROJECT_DIR$/Cube3D/core/Cube3D-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/desktop/Cube3D-desktop.iml" filepath="$PROJECT_DIR$/Cube3D/desktop/Cube3D-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/ios/Cube3D-ios.iml" filepath="$PROJECT_DIR$/Cube3D/ios/Cube3D-ios.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Libgdx-examples.iml" filepath="$PROJECT_DIR$/.idea/Libgdx-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SceneNavegation.iml" filepath="$PROJECT_DIR$/.idea/modules/SceneNavegation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SceneNavegation/android/SceneNavegation-android.iml" filepath="$PROJECT_DIR$/SceneNavegation/android/SceneNavegation-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SceneNavegation/core/SceneNavegation-core.iml" filepath="$PROJECT_DIR$/SceneNavegation/core/SceneNavegation-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SceneNavegation/desktop/SceneNavegation-desktop.iml" filepath="$PROJECT_DIR$/SceneNavegation/desktop/SceneNavegation-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/android/android.iml" filepath="$PROJECT_DIR$/Cube3D/android/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/core/core.iml" filepath="$PROJECT_DIR$/Cube3D/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cube3D/desktop/desktop.iml" filepath="$PROJECT_DIR$/Cube3D/desktop/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SceneNavegation/ios/ios.iml" filepath="$PROJECT_DIR$/SceneNavegation/ios/ios.iml" />
+    </modules>
+  </component>
+</project>

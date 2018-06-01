@@ -21,13 +21,13 @@ public class Cube3D extends ApplicationAdapter {
 	@Override
 	public void create () {
 		modelBatch = new ModelBatch();
-		int fieldOfView = 67;
+		int fieldOfView = 50;
 		// Initiate the camera
 		camera = new PerspectiveCamera(fieldOfView, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(10,10,10);
 		camera.lookAt(0,0,0);
 		camera.near = 1f;
-		camera.far = 300f;
+		camera.far = 100f;
 		camera.update();
 		//Create the cube
 		modelBuilder = new ModelBuilder();
@@ -37,8 +37,8 @@ public class Cube3D extends ApplicationAdapter {
 
 		//Create directional lights
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.3f,0.3f,0.3f,1));
-		environment.add(new DirectionalLight().set(0.8f,0.8f,0.8f, -1f, -0.8f, -0.2f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f,0.2f,0.2f,1));
+		environment.add(new DirectionalLight().set(0.9f,0.9f,0.9f, -1f, -0.8f, -0.2f));
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Cube3D extends ApplicationAdapter {
 
 		//Rotate the cube
 		Vector3 rotationAxisY = new Vector3(0,1,0);
-		float radiansPerFrame = 0.01f;
+		float radiansPerFrame = 0.01f * 4;
 		instanceOfCube.transform.rotateRad(rotationAxisY, radiansPerFrame);
 	}
 	
