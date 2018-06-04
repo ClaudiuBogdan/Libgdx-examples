@@ -1,6 +1,8 @@
 package com.claudiubogdan.scene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -8,8 +10,9 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.sun.prism.image.ViewPort;
 
-public class CubeScreen implements Screen {
+public class CubeScreen implements Screen, InputProcessor {
     final SceneNavegator game;
     //Create a model object to hold a cube
     private Model cube;
@@ -40,6 +43,9 @@ public class CubeScreen implements Screen {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f,0.2f,0.2f,1));
         environment.add(new DirectionalLight().set(0.9f,0.9f,0.9f, -1f, -0.8f, -0.2f));
+
+        Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -61,11 +67,16 @@ public class CubeScreen implements Screen {
         Vector3 rotationAxisY = new Vector3(0,1,0);
         float radiansPerFrame = 0.01f * 4;
         instanceOfCube.transform.rotateRad(rotationAxisY, radiansPerFrame);
+
+        //Escape button for PC. For Android, implement Input.Key.Back
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            // Go to the main menu
+            game.gotoMenuScreen();
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -88,5 +99,49 @@ public class CubeScreen implements Screen {
         //Clear the memory
         modelBatch.dispose();
         cube.dispose();
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK){
+            // Do something
+            game.gotoMenuScreen();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
