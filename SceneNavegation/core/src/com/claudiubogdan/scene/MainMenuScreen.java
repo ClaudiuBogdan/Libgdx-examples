@@ -58,13 +58,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        Button settingsBtn = new TextButton("SETTINGS",mySkin,"small");
+        Button settingsBtn = new TextButton("Bullet Physics",mySkin,"small");
         settingsBtn.setSize(GameConstants.col_width*2,GameConstants.row_height);
         settingsBtn.setPosition(GameConstants.centerX - settingsBtn.getWidth()/2,startBtn.getY() - GameConstants.row_height -15);
         settingsBtn.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //game.gotoSettingsScreen();
+                game.gotoBulletScreen();
                 return true;
             }
 

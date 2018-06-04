@@ -51,4 +51,9 @@ public class SceneNavegator extends Game {
 		setScreen(gameScreen);
 	}
 
+	public void gotoBulletScreen(){
+		BulletScreen bulletScreen = new BulletScreen(this);
+		setScreen(bulletScreen);
+	}
+
 }

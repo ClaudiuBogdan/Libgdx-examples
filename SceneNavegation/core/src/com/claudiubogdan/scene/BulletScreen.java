@@ -7,24 +7,34 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
-import com.sun.prism.image.ViewPort;
 
-public class CubeScreen implements Screen, InputProcessor {
+public class BulletScreen implements Screen, InputProcessor {
     final SceneNavegator game;
-    //Create a model object to hold a cube
-    private Model cube;
-    private ModelBuilder modelBuilder;
-    private ModelInstance instanceOfCube;
-    private ModelBatch modelBatch;
-    private Environment environment;
-    private Camera camera;
 
-    public CubeScreen(final SceneNavegator sceneNavegator){
+    //Physics
+
+    //The cube that will implements Bullet
+    Model cube;
+    ModelInstance instanceOfCube;
+    Vector3 positionOfCube;
+    //The platform that will hold the cube
+    Model platform;
+    ModelInstance instanceOfPlatform;
+
+    ModelBuilder modelBuilder;
+    ModelBatch modelBatch;
+
+    Environment environment;
+    Camera camera;
+
+    public BulletScreen(SceneNavegator sceneNavegator){
         this.game = sceneNavegator;
         modelBatch = new ModelBatch();
+        positionOfCube = new Vector3();
         int fieldOfView = 50;
         // Initiate the camera
         camera = new PerspectiveCamera(fieldOfView, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -33,21 +43,30 @@ public class CubeScreen implements Screen, InputProcessor {
         camera.near = 1f;
         camera.far = 100f;
         camera.update();
+
         //Create the cube
         modelBuilder = new ModelBuilder();
-        cube = modelBuilder.createBox(5,5,5, new Material(ColorAttribute.createDiffuse(Color.RED)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        Material material = new Material(ColorAttribute.createDiffuse(Color.RED));
+        material.set(FloatAttribute.createShininess(32f));
+        cube = modelBuilder.createBox(5,5,5, material,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal );
+
         instanceOfCube = new ModelInstance(cube);
+
+        //Create the platform
+        platform = modelBuilder.createBox(20,2,20, new Material(ColorAttribute.createDiffuse(Color.GOLD),FloatAttribute.createShininess(8f)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        instanceOfPlatform = new ModelInstance(platform);
+        instanceOfPlatform.transform.setTranslation(0,-5,0);
 
         //Create directional lights
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f,0.2f,0.2f,1));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.3f,0.3f,0.3f,1));
         environment.add(new DirectionalLight().set(0.9f,0.9f,0.9f, -1f, -0.8f, -0.2f));
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
     }
-
     @Override
     public void show() {
 
@@ -61,23 +80,44 @@ public class CubeScreen implements Screen, InputProcessor {
         //Render the cube
         modelBatch.begin(camera);
         modelBatch.render(instanceOfCube,environment);
+        modelBatch.render(instanceOfPlatform,environment);
         modelBatch.end();
+
+        movement();
 
         //Rotate the cube
         Vector3 rotationAxisY = new Vector3(0,1,0);
-        float radiansPerFrame = 0.01f * 4;
-        instanceOfCube.transform.rotateRad(rotationAxisY, radiansPerFrame);
+        float radiansPerFrame = -0.01f * 4;
+        //instanceOfCube.transform.rotateRad(rotationAxisY, radiansPerFrame);
 
         //Escape button for PC. For Android, implement Input.Key.Back
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             // Go to the main menu
-            dispose();
             game.gotoMenuScreen();
         }
+
+    }
+    private void movement() {
+        instanceOfCube.transform.getTranslation(positionOfCube);
+        int velocity = 4;
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            positionOfCube.x+=Gdx.graphics.getDeltaTime()*velocity;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            positionOfCube.z+=Gdx.graphics.getDeltaTime()*velocity;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            positionOfCube.z-=Gdx.graphics.getDeltaTime()*velocity;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            positionOfCube.x-=Gdx.graphics.getDeltaTime()*velocity;
+        }
+        instanceOfCube.transform.setTranslation(positionOfCube);
     }
 
     @Override
     public void resize(int width, int height) {
+
     }
 
     @Override
@@ -97,17 +137,11 @@ public class CubeScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        //Clear the memory
-        modelBatch.dispose();
-        cube.dispose();
+
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.BACK){
-            // Do something
-            game.gotoMenuScreen();
-        }
         return false;
     }
 
