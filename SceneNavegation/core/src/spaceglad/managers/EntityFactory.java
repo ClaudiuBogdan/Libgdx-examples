@@ -64,10 +64,10 @@ public class EntityFactory {
         CharacterComponent characterComponent = new CharacterComponent();
         characterComponent.ghostObject = new btPairCachingGhostObject();
         characterComponent.ghostObject.setWorldTransform(modelComponent.instance.transform);
-        characterComponent.ghostShape = new btCapsuleShape(2f, 2f);
+        characterComponent.ghostShape = new btCapsuleShape(3f, 2f);
         characterComponent.ghostObject.setCollisionShape(characterComponent.ghostShape);
         characterComponent.ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-        characterComponent.characterController = new btKinematicCharacterController(characterComponent.ghostObject, characterComponent.ghostShape, .35f);
+        characterComponent.characterController = new btKinematicCharacterController(characterComponent.ghostObject, characterComponent.ghostShape, 0.35f);
         characterComponent.ghostObject.userData = entity;
         entity.add(characterComponent);
         bulletSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).ghostObject,
