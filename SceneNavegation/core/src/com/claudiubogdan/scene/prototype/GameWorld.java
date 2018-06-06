@@ -27,12 +27,13 @@ public class GameWorld {
     private Engine engine; //The ashley engine that handles the objects.
 
     public ModelBuilder modelBuilder = new ModelBuilder();
-    Model wallHorizontal = modelBuilder.createBox(40, 20, 1,
+    float wallHeight = 10;
+    Model wallHorizontal = modelBuilder.createBox(40, wallHeight, 1,
             new Material(ColorAttribute.createDiffuse(Color.WHITE),
                     ColorAttribute.createSpecular(Color.RED), FloatAttribute
                     .createShininess(16f)), VertexAttributes.Usage.Position
                     | VertexAttributes.Usage.Normal);
-    Model wallVertical = modelBuilder.createBox(1, 20, 40,
+    Model wallVertical = modelBuilder.createBox(1, wallHeight, 40,
             new Material(ColorAttribute.createDiffuse(Color.GREEN),
                     ColorAttribute.createSpecular(Color.WHITE),
                     FloatAttribute.createShininess(16f)),
@@ -61,11 +62,12 @@ public class GameWorld {
     }
 
     private void createGround() {
+        float high_pos = wallHeight/2 - 1;
         engine.addEntity(EntityFactory.createStaticEntity(groundModel,0, 0, 0));
-        engine.addEntity(EntityFactory.createStaticEntity(wallHorizontal, 0, 10, -20));
-        engine.addEntity(EntityFactory.createStaticEntity(wallHorizontal, 0, 10, 20));
-        engine.addEntity(EntityFactory.createStaticEntity(wallVertical, 20, 10, 0));
-        engine.addEntity(EntityFactory.createStaticEntity(wallVertical, -20, 10, 0));
+        engine.addEntity(EntityFactory.createStaticEntity(wallHorizontal, 0, high_pos, -20));
+        engine.addEntity(EntityFactory.createStaticEntity(wallHorizontal, 0, high_pos, 20));
+        engine.addEntity(EntityFactory.createStaticEntity(wallVertical, 20, high_pos, 0));
+        engine.addEntity(EntityFactory.createStaticEntity(wallVertical, -20, high_pos, 0));
     }
 
     private void addSystems() {
