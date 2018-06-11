@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Class that represents a basic the model of objects from the game.
@@ -20,8 +21,14 @@ public class ModelComponent implements Component {
      * @param z The coordinate Z of the model position.
      **/
     public ModelComponent(Model model, float x, float y, float z){
+        this(model, new Vector3(x,y,z));
+    }
+
+
+    public ModelComponent(Model model, Vector3 pos){
         this.model = model;
-        this.modelInstance = new ModelInstance(model, new Matrix4().setToTranslation(x,y,z));
+        this.modelInstance = new ModelInstance(model, new Matrix4().setToTranslation(pos));
+
     }
 
 }

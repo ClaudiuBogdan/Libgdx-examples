@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.physics.bullet.Bullet;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.claudiubogdan.scene.prototype.screen.GameScreen;
 
 /**
@@ -14,10 +16,16 @@ public class Core extends ApplicationAdapter {
     public static final float VIRTUAL_HEIGHT = 540;
     private Screen screen;
 
+    static {
+        //new SharedLibraryLoader().load("gdx-bullet");
+    }
+
     @Override
     public void create() {
+        Bullet.init();
         Gdx.input.setCatchBackKey(true); //Catch the back button from the OS
         setScreen(new GameScreen(this));
+        System.out.println("Core");
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
 import com.claudiubogdan.scene.prototype.components.BulletComponent;
+import com.claudiubogdan.scene.prototype.managers.EntityFactory;
 import spaceglad.components.CharacterComponent;
 
 /**
@@ -24,18 +25,15 @@ public class BulletSystem extends EntitySystem implements EntityListener {
     public float fixedTimeStep = 1f / 60f;
 
     public BulletSystem() {
-        collisionConfiguration = new
-                btDefaultCollisionConfiguration();
-        dispatcher = new
-                btCollisionDispatcher(collisionConfiguration);
-        broadphase = new btAxisSweep3(new Vector3(-1000, -1000,
-                -1000), new Vector3(1000, 1000, 1000));
+        collisionConfiguration = new btDefaultCollisionConfiguration();
+        dispatcher = new btCollisionDispatcher(collisionConfiguration);
+        broadphase = new btAxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
         solver = new btSequentialImpulseConstraintSolver();
-        collisionWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase, solver, collisionConfiguration);
+        collisionWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
         ghostPairCallback = new btGhostPairCallback();
-        broadphase.getOverlappingPairCache().
-                setInternalGhostPairCallback(ghostPairCallback);
-        this.collisionWorld.setGravity(new Vector3(0, -0.5f, 0));
+        broadphase.getOverlappingPairCache().setInternalGhostPairCallback(ghostPairCallback);
+        this.collisionWorld.setGravity(new Vector3(0, -20, 0));
+        //collisionWorld.applyGravity();
     }
     @Override
     public void update(float deltaTime) {

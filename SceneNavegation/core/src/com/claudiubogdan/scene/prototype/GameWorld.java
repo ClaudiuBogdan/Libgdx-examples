@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.claudiubogdan.scene.prototype.components.CharacterComponent;
 import com.claudiubogdan.scene.prototype.components.ModelComponent;
 import com.claudiubogdan.scene.prototype.managers.EntityFactory;
 import com.claudiubogdan.scene.prototype.systems.BulletSystem;
+import com.claudiubogdan.scene.prototype.systems.CubeSystem;
 import com.claudiubogdan.scene.prototype.systems.RenderSystem;
 
 
@@ -26,6 +28,7 @@ public class GameWorld {
     private PerspectiveCamera camera; //The camera that will focus the scene.
     private Engine engine; //The ashley engine that handles the objects.
 
+    public BulletSystem bulletSystem;
     public ModelBuilder modelBuilder = new ModelBuilder();
     float wallHeight = 10;
     Model wallHorizontal = modelBuilder.createBox(40, wallHeight, 1,
@@ -58,6 +61,7 @@ public class GameWorld {
     }
 
     private void addEntities() {
+
         createGround();
     }
 
@@ -70,9 +74,13 @@ public class GameWorld {
         engine.addEntity(EntityFactory.createStaticEntity(wallVertical, -20, high_pos, 0));
     }
 
+
     private void addSystems() {
         engine = new Engine();
+        bulletSystem = new BulletSystem();
+        engine.addSystem(bulletSystem);
         engine.addSystem(new RenderSystem(batch, environment));
+        engine.addSystem(new CubeSystem(this));
     }
 
     /**
@@ -112,6 +120,9 @@ public class GameWorld {
         wallHorizontal.dispose();
         wallVertical.dispose();
         groundModel.dispose();
+        bulletSystem.dispose();
+
+        bulletSystem = null;
     }
 
     /**
@@ -129,5 +140,10 @@ public class GameWorld {
         batch.begin(camera);
         engine.update(delta);
         batch.end();
+    }
+
+    public void remove(Entity entity) {
+        engine.removeEntity(entity);
+        bulletSystem.removeBody(entity);
     }
 }
