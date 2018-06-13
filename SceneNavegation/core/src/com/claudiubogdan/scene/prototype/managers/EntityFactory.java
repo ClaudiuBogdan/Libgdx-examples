@@ -92,7 +92,7 @@ public class EntityFactory {
                 boundingBox.getHeight() * 0.5f, boundingBox.getDepth() * 0.5f));
         BulletComponent bulletComponent = new BulletComponent();
         bulletComponent.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(5, null,
-                col, new Vector3( 2, 2, 2));
+                col, new Vector3( 2 , 2, 2));
         bulletComponent.body = new btRigidBody(bulletComponent.bodyInfo);
         bulletComponent.body.userData = entity;
         bulletComponent.motionState = new BulletComponent.MotionState(modelComponent.modelInstance.transform);
@@ -100,5 +100,4 @@ public class EntityFactory {
         entity.add(bulletComponent);
         return entity;
     }
-
 }

@@ -34,8 +34,14 @@ public class CubeSystem extends EntitySystem implements EntityListener {
     @Override
     public void update(float deltaTime) {
         count += deltaTime;
-        if( count > 0.51){
-            engine.addEntity(EntityFactory.createCube( random.nextInt(40) - 20, 30 , random.nextInt(40) - 20));
+        if( count > 2.51){
+//            engine.addEntity(EntityFactory.createCube( random.nextInt(40) - 20, 30 , random.nextInt(40) - 20));
+            for(int i=-20; i<20; i = i + 5){
+                for(int j=-20; j<20; j = j+5){
+                    engine.addEntity(EntityFactory.createCube( j, 30 , i));
+                }
+            }
+
             count = 0;
         }
     }
