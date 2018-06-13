@@ -2,6 +2,9 @@ package com.claudiubogdan.scene.prototype;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -9,7 +12,9 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.claudiubogdan.scene.maze.GenerateMaze;
 import com.claudiubogdan.scene.prototype.components.CharacterComponent;
 import com.claudiubogdan.scene.prototype.components.ModelComponent;
 import com.claudiubogdan.scene.prototype.managers.EntityFactory;
@@ -21,12 +26,13 @@ import com.claudiubogdan.scene.prototype.systems.RenderSystem;
 /**
  * Class that will hold the objects to be rendered, camera, environment.
  */
-public class GameWorld {
+public class GameWorld extends InputAdapter {
     private static final float FOV = 67; //Angle of camera aperture.
     private ModelBatch batch; //Render objects into the screen.
     private Environment environment; //Add light to scene and objects.
     private PerspectiveCamera camera; //The camera that will focus the scene.
     private Engine engine; //The ashley engine that handles the objects.
+    private CameraInputController camController; //Controller for the camera.
 
     public BulletSystem bulletSystem;
     public ModelBuilder modelBuilder = new ModelBuilder();
@@ -48,6 +54,12 @@ public class GameWorld {
                     FloatAttribute.createShininess(16f)),
             VertexAttributes.Usage.Position
                     | VertexAttributes.Usage.Normal);
+    Model cube = modelBuilder.createBox(2, 2, 2,
+            new Material(ColorAttribute.createDiffuse(Color.GREEN),
+                    ColorAttribute.createSpecular(Color.WHITE),
+                    FloatAttribute.createShininess(16f)),
+            VertexAttributes.Usage.Position |
+                    VertexAttributes.Usage.Normal);
 
     /**
      * Constructor that initialize a GameWorld object.
@@ -62,9 +74,22 @@ public class GameWorld {
 
     private void addEntities() {
 
-        createGround();
+        //createGround();
+        createMaze();
     }
 
+    private void createMaze(){
+        GenerateMaze maze = new GenerateMaze(10,16,2,2);
+        int[][] mazeMatrix = maze.getMaze();
+        int dimensionCube = 2;
+        for(int i = 0; i<mazeMatrix.length; i++){
+            for(int j=0; j<mazeMatrix[0].length; j++){
+                if(mazeMatrix[i][j] != maze.EMPTY_ID){
+                    engine.addEntity(EntityFactory.createStaticEntity(cube, i * dimensionCube - mazeMatrix.length/2, 0, j * dimensionCube - mazeMatrix[0].length/2));
+                }
+            }
+        }
+    }
     private void createGround() {
         float high_pos = wallHeight/2 - 1;
         engine.addEntity(EntityFactory.createStaticEntity(groundModel,0, 0, 0));
@@ -94,6 +119,11 @@ public class GameWorld {
         camera.near = 1f;
         camera.far = 300f;
         camera.update();
+
+        //Add camera controller to the game
+        camController = new CameraInputController(camera);
+        Gdx.input.setInputProcessor(new InputMultiplexer(this, camController));
+
     }
 
     /**
